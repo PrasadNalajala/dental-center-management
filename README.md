@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+# ENTNT Dental Center Management Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Dashboard Screenshot](https://github.com/PrasadNalajala/dental-center-management/raw/master/dashboard-screenshot.png)
 
-## Available Scripts
+A modern, responsive, frontend-only React dashboard for managing a dental center, supporting Admin (Dentist) and Patient roles. All data is stored in localStorage. No backend, no external auth/data libraries, and no API usage.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/PrasadNalajala/dental-center-management.git
+   cd dental-center-management
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Start the app:**
+   ```bash
+   npm start
+   ```
+   The app will run at [http://localhost:3000](http://localhost:3000)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🏗️ Project Architecture
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React + MUI:** Modern UI with Material-UI (MUI) and custom theming.
+- **Routing:** `react-router-dom` for role-based navigation.
+- **State Management:**
+  - `AuthContext`: Simulated authentication, user state, and role switching.
+  - `DataContext`: All patient, appointment, and incident data, persisted in localStorage.
+- **Pages:**
+  - `DashboardPage`: Admin dashboard with KPIs, appointments, and top patients.
+  - `PatientManagementPage`: CRUD for patients.
+  - `IncidentManagementPage`: CRUD for appointments/incidents, file upload (base64, localStorage).
+  - `CalendarPage`: Custom calendar view (date-fns).
+  - `LoginPage`: Simulated login for Admin and Patient roles.
+  - `PatientDashboardPage`: Patient view of their own data, appointments, and files.
+- **Components:**
+  - `Layout`: Responsive sidebar, AppBar, and content area.
+  - `KpiCard`: Modern, glassy KPI widgets.
+  - `IncidentForm`, `PatientForm`: Forms for CRUD actions.
+- **Styling:**
+  - Custom MUI theme, glassmorphism, and responsive design.
+  - All UI/UX is mobile-first and touch-friendly.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🐞 Known Issues / Limitations
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Data is not shared between browsers or devices (localStorage only).
+- File uploads are limited by localStorage size and browser support.
+- No real authentication or security (for demo/assignment use only).
+- No backend integration or real-time updates.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 📂 File Structure (Key Parts)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- `src/contexts/` — AuthContext, DataContext
+- `src/pages/` — DashboardPage, PatientManagementPage, IncidentManagementPage, CalendarPage, LoginPage, PatientDashboardPage
+- `src/components/` — Layout, KpiCard, forms
+- `src/data/` — mockData.js (initial data)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📞 Contact
+For questions or feedback, contact the project maintainer.
