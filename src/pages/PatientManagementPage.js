@@ -4,11 +4,12 @@ import { DataContext } from '../contexts/DataContext';
 import PatientForm from '../components/PatientForm';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  Button, IconButton, Typography
+  IconButton, Typography, Fab, Tooltip, Box
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FolderIcon from '@mui/icons-material/Folder';
+import AddIcon from '@mui/icons-material/Add';
 
 const PatientManagementPage = () => {
   const { data, deletePatient } = useContext(DataContext);
@@ -43,15 +44,12 @@ const PatientManagementPage = () => {
   };
 
   return (
-    <>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{position: 'relative'}}>
+      <Typography variant="h4" gutterBottom sx={{fontWeight: 700, mb: 3}}>
         Patient Management
       </Typography>
-      <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={handleOpen}>
-        Add New Patient
-      </Button>
       <PatientForm open={open} handleClose={handleClose} patientToEdit={patientToEdit} />
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{borderRadius: 3, boxShadow: 2}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -70,22 +68,21 @@ const PatientManagementPage = () => {
                 <TableCell>{patient.contact}</TableCell>
                 <TableCell>{patient.healthInfo}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleViewIncidents(patient.id)} title="View Incidents">
-                    <FolderIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleEdit(patient)} title="Edit Patient">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(patient.id)} title="Delete Patient">
-                    <DeleteIcon />
-                  </IconButton>
+                  <Tooltip title="View Incidents"><IconButton onClick={() => handleViewIncidents(patient.id)}><FolderIcon /></IconButton></Tooltip>
+                  <Tooltip title="Edit Patient"><IconButton onClick={() => handleEdit(patient)}><EditIcon /></IconButton></Tooltip>
+                  <Tooltip title="Delete Patient"><IconButton onClick={() => handleDelete(patient.id)}><DeleteIcon /></IconButton></Tooltip>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+      <Tooltip title="Add New Patient">
+        <Fab color="primary" aria-label="add" onClick={handleOpen} sx={{position: 'fixed', bottom: 32, right: 32, boxShadow: 4}}>
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+    </Box>
   );
 };
 

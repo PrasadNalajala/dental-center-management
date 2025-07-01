@@ -1,9 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../contexts/DataContext';
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
-import { Box, Typography, IconButton, Paper, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Typography, IconButton, Paper, List, ListItem, ListItemText, Chip } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+const statusColor = (status) => {
+  if (status === 'Completed') return 'success';
+  if (status === 'Scheduled') return 'info';
+  if (status === 'Cancelled') return 'error';
+  return 'default';
+};
 
 const CalendarPage = () => {
     const { data } = useContext(DataContext);
@@ -43,33 +50,39 @@ const CalendarPage = () => {
             </Box>
 
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
-                {days.map(day => (
-                    <Box key={day.toString()} sx={{ 
-                        border: '1px solid #ddd', 
-                        height: 150, 
-                        p: 1, 
-                        overflowY: 'auto',
-                        color: !isSameMonth(day, monthStart) ? 'text.secondary' : 'text.primary',
-                        backgroundColor: isSameDay(day, new Date()) ? '#f0f0f0' : 'inherit'
-                    }}>
-                        <Typography variant="body2">{format(day, 'd')}</Typography>
-                        <List dense>
-                            {(appointmentsByDate[format(day, 'yyyy-MM-dd')] || []).map(app => (
-                                <ListItem key={app.id} sx={{p: 0}}>
-                                    <ListItemText 
-                                        primary={app.title} 
-                                        secondary={format(new Date(app.appointmentDate), 'h:mm a')} 
-                                        sx={{
-                                            backgroundColor: '#e3f2fd', p: 0.5, borderRadius: 1, mb: 0.5,
-                                            '& .MuiListItemText-primary': { fontSize: '0.8rem', fontWeight: 'bold' },
-                                            '& .MuiListItemText-secondary': { fontSize: '0.7rem' }
-                                        }} 
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Box>
-                ))}
+                {days.map(day => {
+                    const hasAppointments = (appointmentsByDate[format(day, 'yyyy-MM-dd')] || []).length > 0;
+                    return (
+                        <Box key={day.toString()} sx={{ 
+                            border: '1px solid #ddd', 
+                            height: 150, 
+                            p: 1, 
+                            overflowY: 'auto',
+                            color: !isSameMonth(day, monthStart) ? 'text.secondary' : 'text.primary',
+                            backgroundColor: isSameDay(day, new Date()) ? '#f0f0f0' : hasAppointments ? '#e3f2fd' : 'inherit',
+                            transition: 'background 0.2s',
+                            '&:hover': { backgroundColor: hasAppointments ? '#bbdefb' : '#f5f5f5', cursor: hasAppointments ? 'pointer' : 'default' }
+                        }}>
+                            <Typography variant="body2">{format(day, 'd')}</Typography>
+                            <List dense>
+                                {(appointmentsByDate[format(day, 'yyyy-MM-dd')] || []).map(app => (
+                                    <ListItem key={app.id} sx={{p: 0}}>
+                                        <ListItemText 
+                                            primary={app.title} 
+                                            secondary={format(new Date(app.appointmentDate), 'h:mm a')} 
+                                            sx={{
+                                                backgroundColor: '#fff', p: 0.5, borderRadius: 1, mb: 0.5,
+                                                '& .MuiListItemText-primary': { fontSize: '0.8rem', fontWeight: 'bold' },
+                                                '& .MuiListItemText-secondary': { fontSize: '0.7rem' }
+                                            }} 
+                                        />
+                                        <Chip label={app.status} color={statusColor(app.status)} size="small" sx={{ml: 1}} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    );
+                })}
             </Box>
         </Paper>
     );

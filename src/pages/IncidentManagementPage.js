@@ -4,10 +4,18 @@ import { DataContext } from '../contexts/DataContext';
 import IncidentForm from '../components/IncidentForm';
 import {
   Typography, Button, Paper, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, IconButton
+  TableContainer, TableHead, TableRow, IconButton, Fab, Tooltip, Box, Chip
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+
+const statusColor = (status) => {
+  if (status === 'Completed') return 'success';
+  if (status === 'Scheduled') return 'info';
+  if (status === 'Cancelled') return 'error';
+  return 'default';
+};
 
 const IncidentManagementPage = () => {
   const { patientId } = useParams();
@@ -45,20 +53,17 @@ const IncidentManagementPage = () => {
   }
 
   return (
-    <>
+    <Box sx={{position: 'relative'}}>
       <Button variant="outlined" onClick={() => navigate('/patients')} sx={{ mb: 2 }}>
         &larr; Back to Patients
       </Button>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{fontWeight: 700, mb: 3}}>
         Incidents for: {patient.name}
       </Typography>
       <Typography variant="body1" color="text.secondary" gutterBottom>
         DOB: {patient.dob} | Contact: {patient.contact}
       </Typography>
 
-      <Button variant="contained" color="primary" sx={{ mb: 2, mt: 2 }} onClick={handleOpen}>
-        Add New Incident
-      </Button>
       <IncidentForm 
         open={open} 
         handleClose={handleClose} 
@@ -66,7 +71,7 @@ const IncidentManagementPage = () => {
         patientId={patientId} 
       />
       
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{borderRadius: 3, boxShadow: 2}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -82,22 +87,23 @@ const IncidentManagementPage = () => {
               <TableRow key={incident.id}>
                 <TableCell>{incident.title}</TableCell>
                 <TableCell>{new Date(incident.appointmentDate).toLocaleString()}</TableCell>
-                <TableCell>{incident.status}</TableCell>
+                <TableCell><Chip label={incident.status} color={statusColor(incident.status)} size="small" /></TableCell>
                 <TableCell>₹{incident.cost}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleEdit(incident)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(incident.id)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Tooltip title="Edit Incident"><IconButton onClick={() => handleEdit(incident)}><EditIcon /></IconButton></Tooltip>
+                  <Tooltip title="Delete Incident"><IconButton onClick={() => handleDelete(incident.id)}><DeleteIcon /></IconButton></Tooltip>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+      <Tooltip title="Add New Incident">
+        <Fab color="primary" aria-label="add" onClick={handleOpen} sx={{position: 'fixed', bottom: 32, right: 32, boxShadow: 4}}>
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+    </Box>
   );
 };
 
